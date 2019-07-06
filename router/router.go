@@ -141,11 +141,6 @@ func SetupRouting(e *echo.Echo, h *Handlers) {
 				}
 			}
 		}
-		apiHeartBeat := api.Group("/heartbeat")
-		{
-			apiHeartBeat.GET("", h.GetHeartbeat, requires(permission.GetHeartbeat))
-			apiHeartBeat.POST("", h.PostHeartbeat, requires(permission.PostHeartbeat))
-		}
 		apiChannels := api.Group("/channels")
 		{
 			apiChannels.GET("", h.GetChannels, requires(permission.GetChannel))
@@ -328,6 +323,13 @@ func SetupRouting(e *echo.Echo, h *Handlers) {
 		if len(h.SkyWaySecretKey) > 0 {
 			api.POST("/skyway/authenticate", h.PostSkyWayAuthenticate, botGuard(blockAlways))
 		}
+	}
+
+	apiHeartBeat := e.Group("/api/1.0/heartbeat", h.HeartBeatAuthenticate())
+	{
+		// 権限確認をしない
+		apiHeartBeat.GET("", h.GetHeartbeat)
+		apiHeartBeat.POST("", h.PostHeartbeat)
 	}
 
 	apiNoAuth := e.Group("/api/1.0")

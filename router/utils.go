@@ -308,7 +308,7 @@ func getRequestUser(c echo.Context) *model.User {
 }
 
 func getRequestUserID(c echo.Context) uuid.UUID {
-	return getRequestUser(c).ID
+	return c.Get("userID").(uuid.UUID)
 }
 
 func getRequestParamAsUUID(c echo.Context, name string) uuid.UUID {

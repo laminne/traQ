@@ -135,6 +135,60 @@ func (h *Handlers) UserAuthenticate() echo.MiddlewareFunc {
 	}
 }
 
+// HeartBeatAuthenticate HeartBeat用のUser認証するミドルウェア ユーザーの存在と状態は検証されない
+func (h *Handlers) HeartBeatAuthenticate() echo.MiddlewareFunc {
+	return func(next echo.HandlerFunc) echo.HandlerFunc {
+		return func(c echo.Context) error {
+			var userID uuid.UUID
+			ah := c.Request().Header.Get(echo.HeaderAuthorization)
+			if len(ah) > 0 {
+				// AuthorizationヘッダーがあるためOAuth2で検証
+
+				// Authorizationスキーム検証
+				l := len(authScheme)
+				if !(len(ah) > l+1 && ah[:l] == authScheme) {
+					return echo.NewHTTPError(http.StatusUnauthorized, "the Authorization Header's scheme is invalid")
+				}
+
+				// OAuth2 Token検証
+				token, err := h.Repo.GetTokenByAccess(ah[l+1:])
+				if err != nil {
+					switch err {
+					case repository.ErrNotFound:
+						return echo.NewHTTPError(http.StatusUnauthorized, "the token is invalid")
+					default:
+						return internalServerError(err, h.requestContextLogger(c))
+					}
+				}
+
+				// tokenの有効期限の検証
+				if token.IsExpired() {
+					return echo.NewHTTPError(http.StatusUnauthorized, "the token is expired")
+				}
+
+				// tokenの検証に成功。ユーザーを取得
+				userID = token.UserID
+
+				c.Set("scopes", token.Scopes)
+			} else {
+				// Authorizationヘッダーがないためセッションを確認する
+				sess, err := sessions.Get(c.Response(), c.Request(), false)
+				if err != nil {
+					return internalServerError(err, h.requestContextLogger(c))
+				}
+				if sess == nil || sess.GetUserID() == uuid.Nil {
+					return echo.NewHTTPError(http.StatusUnauthorized, "You are not logged in")
+				}
+
+				userID = sess.GetUserID()
+			}
+
+			c.Set("userID", userID)
+			return next(c)
+		}
+	}
+}
+
 // AccessControlMiddlewareGenerator アクセスコントロールミドルウェアのジェネレーターを返します
 func AccessControlMiddlewareGenerator(r rbac.RBAC) func(p ...rbac.Permission) echo.MiddlewareFunc {
 	return func(p ...rbac.Permission) echo.MiddlewareFunc {
