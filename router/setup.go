@@ -67,6 +67,7 @@ func Setup(config *Config) *echo.Echo {
 		Revision:                        config.Revision,
 		SkyWaySecretKey:                 config.SkyWaySecretKey,
 		EnabledExternalAccountProviders: config.ExternalAuth.ValidProviders(),
+		EnableSignUp:                    config.EnableSignUp,
 	}
 	v3.Setup(api)
 

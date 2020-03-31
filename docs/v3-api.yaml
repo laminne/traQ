@@ -1993,14 +1993,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  version:
-                    type: string
-                    description: traQ(サーバー)バージョン
-                  revision:
-                    type: string
-                    description: traQ(サーバー)リビジョン
+                $ref: '#/components/schemas/Version'
       operationId: getServerVersion
   /login:
     post:
@@ -5734,6 +5727,28 @@ components:
           description: 外部サービス名
       required:
         - providerName
+    Version:
+      title: Version
+      type: object
+      properties:
+        revision:
+          type: string
+          description: traQ(サーバー)リビジョン
+        version:
+          type: string
+          description: traQ(サーバー)バージョン
+        flags:
+          type: object
+          properties:
+            externalLogin:
+              type: array
+              description: 有効な外部ログインプロバイダ
+              items:
+                type: string
+            signup:
+              type: boolean
+              description: サインアップが有効かどうか
+      description: バージョン・サーバーフラグ情報
   headers:
     X-TRAQ-MORE:
       schema:

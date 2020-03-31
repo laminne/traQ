@@ -185,6 +185,7 @@ var serveCommand = &cobra.Command{
 					RegisterUserIfNotFound: c.ExternalAuth.OIDC.AllowSignUp,
 				},
 			},
+			EnableSignUp: c.AllowSignUp,
 		})
 
 		go func() {

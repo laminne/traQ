@@ -28,6 +28,8 @@ type Handlers struct {
 
 	// EnabledExternalAccountLink リンク可能な外部認証アカウントのプロバイダ
 	EnabledExternalAccountProviders map[string]bool
+	// EnableSignUp サインアップAPIを有効にするかどうか
+	EnableSignUp bool
 }
 
 // Setup APIルーティングを行います

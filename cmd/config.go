@@ -182,6 +182,9 @@ type Config struct {
 			Scopes       []string `mapstructure:"scopes" yaml:"scopes"`
 		} `mapstructure:"oidc" yaml:"oidc"`
 	} `mapstructure:"externalAuth" yaml:"externalAuth"`
+
+	// AllowSignUp サインアップAPIを有効にするかどうか
+	AllowSignUp bool `mapstructure:"allowSignUp" yaml:"allowSignUp"`
 }
 
 // Configのデフォルト値設定
@@ -238,6 +241,7 @@ func init() {
 	viper.SetDefault("externalAuth.oidc.clientSecret", "")
 	viper.SetDefault("externalAuth.oidc.scopes", []string{})
 	viper.SetDefault("externalAuth.oidc.allowSignUp", false)
+	viper.SetDefault("allowSignUp", false)
 	viper.SetDefault("skyway.secretKey", "")
 	viper.SetDefault("jwt.keys.private", "")
 }

@@ -33,6 +33,8 @@ type Config struct {
 	SkyWaySecretKey string
 	// ExternalAuth 外部認証設定
 	ExternalAuth ExternalAuthConfig
+	// EnableSignUp サインアップAPIを有効にするかどうか
+	EnableSignUp bool
 	// Hub イベントハブ
 	Hub *hub.Hub
 	// Repository リポジトリ
