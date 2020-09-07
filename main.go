@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/traPtitech/traQ/cmd"
+	"github.com/laminne/traQ/cmd"
 	"log"
 )
 

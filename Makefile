@@ -68,7 +68,7 @@ goreleaser-snapshot:
 .PHONY: update-frontend
 update-frontend:
 	@mkdir -p ./dev/frontend
-	@curl -L -Ss https://github.com/traPtitech/traQ_S-UI/releases/latest/download/dist.tar.gz | tar zxv -C ./dev/frontend/ --strip-components=2
+	@curl -L -Ss https://github.com/laminne/traQ_S-UI/releases/latest/download/dist.tar.gz | tar zxv -C ./dev/frontend/ --strip-components=2
 
 .PHONY: reset-frontend
 reset-frontend:

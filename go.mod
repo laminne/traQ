@@ -1,4 +1,4 @@
-module github.com/traPtitech/traQ
+module github.com/laminne/traQ
 
 require (
 	cloud.google.com/go v0.65.0
