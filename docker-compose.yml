@@ -10,6 +10,8 @@ services:
       TRAQ_PPROF: "true"
     entrypoint: dockerize -timeout 60s -wait tcp://mysql:3306
     command: ./traQ serve --dev --skip-init-emojis
+    volumes:                                                         # ここ追加 
+      - db_data:/var/lib/mysql
     expose:
       - "80"
       - "6060"
