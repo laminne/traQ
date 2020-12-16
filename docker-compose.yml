@@ -10,8 +10,7 @@ services:
       TRAQ_PPROF: "true"
     entrypoint: dockerize -timeout 60s -wait tcp://mysql:3306
     command: ./traQ serve --dev --skip-init-emojis
-    volumes:                                                         # ここ追加 
-      - db_data:/var/lib/mysql
+   
     expose:
       - "80"
       - "6060"
@@ -40,6 +39,8 @@ services:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: traq
     # conohaのDBのデフォルトCharsetはutf8
+    volumes:                                                         # ここ追加 
+      - ./db_data:/var/lib/mysql
     command: mysqld --character-set-server=utf8 --collation-server=utf8_general_ci
     expose:
       - "3306"
